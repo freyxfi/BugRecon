@@ -15,3 +15,31 @@ BugRecon is an automated bug hunting tool designed to streamline the reconnaissa
 9. Modular Design: Although provided as a single script, the tool is structured for easy expansion and integration of additional features.
 
     
+# Prerequisites
+Before using BugRecon, ensure that the following tools and dependencies are installed on your system:
+
+## External Tools
+1. Python 3.6+
+   
+    [Download Python](https://www.python.org/downloads/)
+2. Nmap Install
+
+   `go install github.com/ffuf/ffuf@latest`
+3. ffuf (Fuzz Faster U Fool)
+
+   `go install github.com/ffuf/ffuf@latest`
+
+4. EyeWitness
+
+    ```
+      git clone https://github.com/FortyNorthSecurity/EyeWitness.git
+      cd EyeWitness/Python/setup
+      python setup.py install
+    ```
+
+# Python Packages
+
+Install the required Python packages using pip
+
+`pip install -r requirements.txt
+`
