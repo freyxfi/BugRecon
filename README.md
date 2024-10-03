@@ -43,3 +43,56 @@ Install the required Python packages using pip
 
 `pip install -r requirements.txt
 `
+
+# Installation
+
+1. Clone the Repository
+2. Install Python Dependencies
+3. Ensure External Tools are Installed
+   Make sure that nmap, ffuf, and EyeWitness are installed and added to your system's PATH.
+
+# Usage (update it)
+Run the bug_recon.py script using Python
+
+# Step-by-Step Guide (comming soon)
+
+# Recon Depth Levels (comming soon)
+
+# Example (comming soon)
+
+# Generated Report (example.com_report.txt)
+
+(comming soon) 
+something like this 
+
+```
+Bug Recon Report for example.com
+Subdomains Found:
+- subdomain1.example.com
+- subdomain2.example.com
+- subdomain3.example.com
+- subdomain4.example.com
+- subdomain5.example.com
+
+Open Ports:
+- 80
+- 443
+- 8080
+
+Vulnerabilities:
+- subdomain1.example.com:80
+  - Possible SQL Injection
+  - Possible XSS
+- subdomain3.example.com:443
+  - Possible XSS
+```
+
+
+# Contributing (comming soon)
+
+Contributions are welcome! If you'd like to enhance BugRecon, follow these steps:
+
+# License 
+
+
+Note :- feel free to update and contribute 
