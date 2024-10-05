@@ -71,7 +71,7 @@ def dir_bruteforce(domain, port, wordlist="wordlist.txt", threads="50"):
         protocol = "https" if port == "443" else "http"
         url = f"{protocol}://{domain}:{port}"
         result = subprocess.run(
-            ["ffuf", "-w", wordlist, "-u", f"{url}/FUZZ", "-t", threads, "-o", f"dir_{domain}_{port}.txt"],
+            ["ffuf", "-w", wordlist, "-u", f"{url}/FUZZ", "-t", "50", "-o", f"dir_{domain}_{port}.txt"],
             capture_output=True,
             text=True
         )
