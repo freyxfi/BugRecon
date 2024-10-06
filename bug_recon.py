@@ -1,6 +1,7 @@
 import subprocess
 import requests
 import os
+import sys
 import argparse
 import json
 
@@ -12,7 +13,7 @@ LOGO = r"""
 ██████╔╝╚██████╔╝╚██████╔╝██║  ██║███████╗╚██████╗╚██████╔╝██║ ╚████║
 ╚═════╝  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝
                     [ Created by Frey ]
-         [ Automate your bug hunting process ]
+            [ Automate your bug hunting process ]
 """
 
 def subdomain_enum(domain):
@@ -134,8 +135,8 @@ def generate_report(domain, subdomains, open_ports, output_dir):
             report.write(f"- {port}\n")
     print(f"[*] Report saved as {output_path}")
 
-def bug_recon(domain, recon_depth, output_file, output_dir, threads):
-    print(LOGO)
+def bug_recon(domain, recon_depth, output_file, output_dir, threads, mode):
+    if mode == 1: print(LOGO)
     print(f"BugRecon - Automated Bug Hunting Tool on {domain} with {recon_depth} depth")
 
     subdomains = subdomain_enum(domain)
@@ -186,8 +187,8 @@ def help_menu():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument('-d', '--domain', type=str, required=True, help="Target domain for bug reconnaissance")
-    parser.add_argument('-r', '--recon-depth', type=str, required=True, choices=['shallow', 'medium', 'deep'], help="Reconnaissance depth: shallow, medium, deep")
+    parser.add_argument('-d', '--domain', type=str, help="Target domain for bug reconnaissance")
+    parser.add_argument('-r', '--recon-depth', type=str, choices=['shallow', 'medium', 'deep'], help="Reconnaissance depth: shallow, medium, deep")
     parser.add_argument('-o', '--output-file', type=str, default="subdomains.txt", help="Output file for saving subdomains (default: subdomains.txt)")
     parser.add_argument('-t', '--threads', type=str, default="50", help="Number of threads for brute-forcing directories (default: 50)")
     parser.add_argument('-h', '--help', action='store_true', help="Show help message")
@@ -196,5 +197,17 @@ if __name__ == "__main__":
 
     if args.help:
         help_menu()
+        sys.exit(0)
+    
+    if len(sys.argv) == 1:
+        print(LOGO)
+        domain = input("Target domain for bug reconnaissance: ")
+        recon_depth = input("Reconnaissance depth (shallow, medium, deep): ")
+        output_file = input("Output file for saving subdomains (default: subdomains.txt): ") or "subdomains.txt"
+        threads = input("Number of threads for brute-forcing directories (default: 50): ") or "50"
+        bug_recon(domain, recon_depth, output_file, ".", threads, 0)
     else:
-        bug_recon(args.domain, args.recon_depth, args.output_file, ".", args.threads)
+        if not args.domain or not args.recon_depth:
+            parser.print_help()
+            sys.exit(1)
+        bug_recon(args.domain, args.recon_depth, args.output_file, ".", args.threads, 1)
