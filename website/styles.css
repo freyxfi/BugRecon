@@ -161,3 +161,28 @@ footer {
         background: #007bff;
     }
 }
+
+
+#contributors {
+    margin-top: 20px;
+}
+
+#contributor-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between contributors */
+    list-style: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+#contributor-list li {
+    display: flex;
+    align-items: center;
+}
+
+#contributor-list img {
+    border-radius: 50%; /* Circular avatar */
+    width: 50px; /* Avatar size */
+    height: 50px; /* Avatar size */
+}
