@@ -72,7 +72,7 @@ def dir_bruteforce(domain, port, wordlist="wordlist.txt", threads="50"):
         protocol = "https" if port == "443" else "http"
         url = f"{protocol}://{domain}:{port}"
         result = subprocess.run(
-            ["ffuf", "-w", wordlist, "-u", f"{url}/FUZZ", "-t", "50", "-o", f"dir_{domain}_{port}.txt"],
+            ["ffuf", "-w", wordlist, "-u", f"{url}/FUZZ", "-t", threads, "-o", f"dir_{domain}_{port}.txt"],
             capture_output=True,
             text=True
         )
@@ -135,9 +135,19 @@ def generate_report(domain, subdomains, open_ports, output_dir):
             report.write(f"- {port}\n")
     print(f"[*] Report saved as {output_path}")
 
+def verify_bounty_program(domain):
+    # This is a placeholder function. Implement logic to check if the domain is part of a bug bounty program.
+    authorized_domains = ['example.com', 'government.gov']  # Add more authorized domains as needed
+    return domain in authorized_domains
+
 def bug_recon(domain, recon_depth, output_file, output_dir, threads, mode):
     if mode == 1: print(LOGO)
     print(f"BugRecon - Automated Bug Hunting Tool on {domain} with {recon_depth} depth")
+
+    # Verify that the domain is part of a bug bounty program
+    if not verify_bounty_program(domain):
+        print(f"[!] The domain {domain} is not authorized for testing.")
+        return
 
     subdomains = subdomain_enum(domain)
     if not subdomains:
@@ -191,23 +201,11 @@ if __name__ == "__main__":
     parser.add_argument('-r', '--recon-depth', type=str, choices=['shallow', 'medium', 'deep'], help="Reconnaissance depth: shallow, medium, deep")
     parser.add_argument('-o', '--output-file', type=str, default="subdomains.txt", help="Output file for saving subdomains (default: subdomains.txt)")
     parser.add_argument('-t', '--threads', type=str, default="50", help="Number of threads for brute-forcing directories (default: 50)")
-    parser.add_argument('-h', '--help', action='store_true', help="Show help message")
+    parser.add_argument('-m', '--mode', type=int, default=1, help="Mode for the tool: 1 for standard, 0 for silent")
 
     args = parser.parse_args()
 
-    if args.help:
-        help_menu()
-        sys.exit(0)
-    
-    if len(sys.argv) == 1:
-        print(LOGO)
-        domain = input("Target domain for bug reconnaissance: ")
-        recon_depth = input("Reconnaissance depth (shallow, medium, deep): ")
-        output_file = input("Output file for saving subdomains (default: subdomains.txt): ") or "subdomains.txt"
-        threads = input("Number of threads for brute-forcing directories (default: 50): ") or "50"
-        bug_recon(domain, recon_depth, output_file, ".", threads, 0)
+    if args.domain and args.recon_depth:
+        bug_recon(args.domain, args.recon_depth, args.output_file, os.getcwd(), args.threads, args.mode)
     else:
-        if not args.domain or not args.recon_depth:
-            parser.print_help()
-            sys.exit(1)
-        bug_recon(args.domain, args.recon_depth, args.output_file, ".", args.threads, 1)
+        help_menu()
